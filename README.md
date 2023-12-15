@@ -20,8 +20,8 @@ To install and set up the project, follow these steps:
 2. **Environment Setup**:
    - It's recommended to use a virtual environment for Python.
    ```
-   python -m venv venv
-   source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+   python3 -m venv .venv
+   source .venv/bin/activate  # On Windows, use `venv\Scripts\activate`
    ```
 
 3. **Install Dependencies**:
