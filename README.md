@@ -14,7 +14,7 @@ To install and set up the project, follow these steps:
 
 1. **Clone the Repository**:
    ```
-   git clone git@github.com:ehsanmx/DocTalk.git
+   git clone [git@github.com:ehsanmx/DocTalk.git](https://github.com/ehsanmx/DocTalk.git)
    ```
 
 2. **Environment Setup**:
