@@ -1,0 +1,3 @@
+Drop your Llama model in this folder.
+Supported models:
+- llama-2 (e.g. https://huggingface.co/TheBloke/Llama-2-7B-Chat-GGUF)

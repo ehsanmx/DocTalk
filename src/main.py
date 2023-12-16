@@ -32,7 +32,7 @@ print(f"Loading the model {model} ...")
 llm = Llama(model_path=f"models/{model}", chat_format="llama-2")
 
 
-st.title('Parseh ChatLLM 1.0')
+st.title('DocTalk 1.0')
 with st.sidebar:
     st.markdown('## About Us')
     st.write('Made with ♥️ by [Ehsan Zanjani](http://www.ehsanmx.com)')
