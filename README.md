@@ -36,9 +36,9 @@ To install and set up the project, follow these steps:
 ## Usage
 To use the application, follow these steps:
 
-1. **Start the Application**: Run the main Python script.
+1. **Start the Application**: Run the main Python script via Streamlit command.
    ```
-   python main.py
+   streamlit run src/main.py
    ```
 
 2. **Uploading PDFs**: Use the application to upload PDF documents.
