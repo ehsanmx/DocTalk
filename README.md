@@ -1,4 +1,5 @@
 # DocTalk
+<img width="1204" alt="image" src="https://github.com/ehsanmx/DocTalk/assets/7711957/55dfb23e-10fb-4fd1-b77a-5aff4051c135">
 
 ## Description
 This project enables the transformation of PDF documents into a conversational interface using LLMs. It extracts and tokenizes the content of PDF files, applies embedding techniques and vector search to organize the data efficiently, and then allows local LLMs to use this processed data for generating interactive conversational responses.
