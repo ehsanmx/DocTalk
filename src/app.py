@@ -12,7 +12,6 @@ from langchain.prompts import PromptTemplate
 class DocTalkApp:
     model = "llama-2-7b-chat.Q5_K_M.gguf"
     # llm = Llama(model_path=f"model/{model}", chat_format="llama-2")
-    print("Render")
     template = """[INST] <<SYS>>
     You are a helpful, respectful and honest assistant. Always answer as helpfully as possible, while being safe.  Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content. Please ensure that your responses are socially unbiased and positive in nature. If a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don't know the answer to a question, please don't share false information.
     <</SYS>>
@@ -31,13 +30,18 @@ class DocTalkApp:
     def main(self):        
         self.init_ui()
         st.sidebar.markdown(f"* Loading the model {self.model} is complete.")
-        self.init_pdf_uploader()
+        db = self.init_pdf_uploader()
+        print(db)
+        self.llm_gen(db=db)
 
     def init_ui(self):
         with st.sidebar:
             st.title('DocTalk 1.0')
             st.write('Made with ♥️ by [Ehsan Zanjani](https://www.linkedin.com/in/ezanjani/)')
+            st.markdown('## Session State')
+            st.markdown(st.session_state)
             st.markdown('## Logs')
+            
     
     def init_pdf_uploader(self):
         uploaded_file = st.file_uploader('Upload your PDF file', type='pdf')
@@ -50,14 +54,15 @@ class DocTalkApp:
             ```
                         """)
             db = self.create_embedding_db(pdf=uploaded_file)
-            # TODO Fix this
-            docs = db.similarity_search(query="how many amendments does constitution have?", k=3)
-            st.markdown(f"""
+            # if 'db' not in st.session_state:
+            st.session_state.db = db
+
+            st.markdown("""
             ```
-                        {docs}     
+                    Analyzing the file is complete.
             ```
                         """)
-            # llm_gen(docs)
+            return db
     
     def create_embedding_db(self, pdf: PdfReader) -> FAISS:
         pdf_reader = PdfReader(pdf)
@@ -79,12 +84,12 @@ class DocTalkApp:
 
 
     # Function: llm_gen
-    def llm_gen(docs):
+    def llm_gen(self, db :FAISS):
         """
         Docstring for llm_gen.
         """
-        llm = LlamaCpp(
-            model_path=f"model/{model}",
+        self.llm = LlamaCpp(
+            model_path=f"model/{self.model}",
             temperature=0.75,
             max_tokens=4096,
             n_ctx=4096,
@@ -110,8 +115,13 @@ class DocTalkApp:
                 with st.spinner('Thinking...'):
                     full_response = []
                     placeholder = st.empty()
-                    formatted_prompt = prompt_template.format(history=docs, question=prompt)
-                    for wordstream in llm.stream(formatted_prompt):
+                    docs = []
+                    if 'db' in st.session_state:
+                        db = st.session_state.db
+                        docs = db.similarity_search(query=prompt, k=3)
+                    print(docs)
+                    formatted_prompt = self.prompt_template.format(history=docs, question=prompt)
+                    for wordstream in self.llm.stream(formatted_prompt):
                         if wordstream:
                             full_response.append(wordstream)
                             result = "".join(full_response).strip()
